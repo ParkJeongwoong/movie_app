@@ -1,5 +1,7 @@
 # Movie App
 
+> https://ko.reactjs.org/
+
 React JS Fundamentals Course (2019 Update)
 
 노마드 코더 강의 : `ReactJS로 영화 웹 서비스 만들기`
@@ -72,3 +74,87 @@ Component.propTypes = {
 ```
 
 3. 이 때 에러는 console 창에 나타난다. (동작에는 아무 문제 X)
+
+
+
+## Component
+
+컴포넌트는 function 형태가 아니라 class 형태로도 사용할 수 있다.
+
+이 때의 형태는 `class App extends React.Component{ }` => React.Component로 부터 상속 (class는 상속이 가능하다는 장점이 있음)
+
+우리는 이 React.Component의 render 메서드를 사용해서 화면에 출력
+
+### class component를 사용하는 이유
+
+<u>class 내부에 state를 사용해서 component에서 사용하는 데이터를 관리할 수 있다</u>
+
+
+
+이 때, 함수를 통해 state의 값을 직접 바꾸면 안 된다!
+
+**그리고 react는 render 메서드를 refresh 하지 않음** => `변경된 값을 출력하려면 render를 다시 호출해야 함`
+
+=> 이를 위해 `setState()`를 사용해서 state의 값을 변경
+
+​	이렇게하면 state의 값을 바꾸면서 render를 재호출 가능
+
+
+
+### Class Component
+
+```javascript
+class App extends React.Component{
+  // state : 데이터 보관
+  state = {
+    count: 0
+  }
+  // 함수 : setState를 통해 state의 값 변경 & rerender
+  add = () => {
+    this.setState({count: this.state.count+1})
+  }
+  minus = () => {
+    this.setState(current=>({count: current.count-1})) // 이런 식으로 current를 사용하는 것이 더 나은 방법!!!!!
+  }
+  // render : 화면 출력
+  render() {
+    return (
+      <div>
+        <h1>The number is {this.state.count}</h1>
+        <button onClick={this.add}>Add</button>
+        <button onClick={this.minus}>Minus</button>
+      </div>
+    )
+  }
+}
+```
+
+
+
+## Function
+
+React Component에서 사용하는 유일한 함수는 render
+
+
+
+## Component Life Cycle
+
+> https://ko.reactjs.org/docs/react-component.html#mounting
+
+각 상태에서 다음의 함수를 실행
+
+1. **Mounting**
+   - 생성
+     - constructor()
+     - render()
+     - componentDidMount()
+
+2. **Updating**
+   - 갱신
+     - render()
+     - componentDidUpdate()
+
+3. **Unmounting**
+   - 제거
+     - componentWIllUnmout()
+
