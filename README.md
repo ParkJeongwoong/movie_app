@@ -158,3 +158,60 @@ React Component에서 사용하는 유일한 함수는 render
    - 제거
      - componentWIllUnmout()
 
+
+
+## Fetch
+
+1. fetch()
+
+2. **axios()**
+
+   - 설치: `npm i axios`
+
+   - 사용:
+
+     1. App.js에서 import
+
+     ```javascript
+     import axios from "axios"
+     ```
+
+     2. axios 요청
+
+     ```javascript
+     // GET 요청
+     axios.get("주소")
+     ```
+
+     3. response data 접근
+
+
+
+##  async & await
+
+> 비동기 처리 패턴 문법 중 하나
+
+- 일반적으로 비동기 작업은 `콜백`을 사용해야지 실행순서를 보장 받음
+
+  ```java
+  axios.get("주소")
+      .then((res)=>{
+          console.log(res.data)
+          return res.data
+      })
+  ```
+
+  (이렇게 들여쓰기를 한 콜백을 적어야 데이터를 받아서 사용)
+
+- 위의 코드를 좀 더 <u>직관적으로 바꿔 사용</u>하는 방식이 async & awit
+
+  ```javascript
+  async () => {
+      res = await axios.get("주소")
+      console.log(res.data)
+  }
+  ```
+
+  `async` : 이 함수는 비동기 함수라는 뜻
+
+  `await` : 이 코드의 실행을 마치고 다음 코드를 진행하라는 뜻 (async 함수 안에서만 동작)
