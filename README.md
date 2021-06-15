@@ -8,6 +8,10 @@ React JS Fundamentals Course (2019 Update)
 
 
 
+결과물: https://parkjeongwoong.github.io/movie_app/
+
+
+
 ## 프로젝트 준비
 
 - create react app 을 하면 webpack과 babel이 모두 설치가 된 상태로 project가 생성된다.
@@ -215,3 +219,48 @@ React Component에서 사용하는 유일한 함수는 render
   `async` : 이 함수는 비동기 함수라는 뜻
 
   `await` : 이 코드의 실행을 마치고 다음 코드를 진행하라는 뜻 (async 함수 안에서만 동작)
+
+
+
+
+
+## Cloud에 코드 올리기
+
+1. gh-phages 설치 => GitHub 페이지 도메인에 Static 웹사이트를 나타나게 해 줌
+
+   `npm i gh-pages`
+
+2. package.json 설정
+
+   1. homepage 추가
+
+   ```json
+   "homepage": "https://parkjeongwoong.github.io/movie_app/"
+   ```
+
+   ```json
+   "homepage": "https://{github username}.github.io/{project name}/"
+   ```
+
+   2. script에 deploy 추가 (gh-pages를 통해 업로드할 directory를 buil directory로 설정) <= npm run build로 생성되는 폴더
+
+   ```json
+   "deploy": "gh-pages -d build",
+   ```
+
+   3. script에 deploy 이전에 자동으로 npm run build가 실행되도록 설정
+
+   ```json
+   "predeploy": "npm run build"
+   ```
+
+3. `npm run deploy` 실행
+
+
+
+
+
+## React Hook
+
+**`react hook`을 사용하면 state를 사용하기 위해 class component를 사용할 필요가 없다**
+
