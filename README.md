@@ -63,13 +63,13 @@ React에서 모든 element는 유일성을 가져야 한다 (이 유일성은 Li
 
 1. App.js에서 import
 
-```javascript
+```react
 import PropTypes from "prop-types"
 ```
 
 2. `Component.propTypes` 형태로 필요한 형식을 지정
 
-```javascript
+```react
 Component.propTypes = {
   name: PropTypes.string.isRequired,
   image: PropTypes.string.isRequired,
@@ -107,7 +107,7 @@ Component.propTypes = {
 
 ### Class Component
 
-```javascript
+```react
 class App extends React.Component{
   // state : 데이터 보관
   state = {
@@ -176,13 +176,13 @@ React Component에서 사용하는 유일한 함수는 render
 
      1. App.js에서 import
 
-     ```javascript
+     ```react
      import axios from "axios"
      ```
 
      2. axios 요청
 
-     ```javascript
+     ```react
      // GET 요청
      axios.get("주소")
      ```
@@ -197,7 +197,7 @@ React Component에서 사용하는 유일한 함수는 render
 
 - 일반적으로 비동기 작업은 `콜백`을 사용해야지 실행순서를 보장 받음
 
-  ```java
+  ```react
   axios.get("주소")
       .then((res)=>{
           console.log(res.data)
@@ -209,7 +209,7 @@ React Component에서 사용하는 유일한 함수는 render
 
 - 위의 코드를 좀 더 <u>직관적으로 바꿔 사용</u>하는 방식이 async & awit
 
-  ```javascript
+  ```react
   async () => {
       res = await axios.get("주소")
       console.log(res.data)
@@ -264,3 +264,143 @@ React Component에서 사용하는 유일한 함수는 render
 
 **`react hook`을 사용하면 state를 사용하기 위해 class component를 사용할 필요가 없다**
 
+
+
+## Routing
+
+> react-router-dom 사용
+
+설치: `npm install react-router-dom`
+
+사용:
+
+ 1. components, routes 디렉토리 생성 후 컴포넌트와 라우트 분리
+
+ 2. App.js에 import
+
+    ```react
+    import { HashRouter, Route } from "react-router-dom"
+    import Home from "./routes/Home"
+    import About from "./routes/About"
+    ```
+
+    - HashRouter 대신 <u>BrowserRouter 사용 가능</u>
+
+ 3. App function에 라우팅
+
+    ```react
+    <HashRouter>
+      <Route path="/" exact={true} component={Home}></Route>
+      <Route path="/about" exact={true} component={About}></Route>
+    </HashRouter>
+    ```
+
+    이 때, exact={true}를 하지 않으면 해당 path가 확인되면 무조건 렌더링을 하게 됨
+
+    (/about의 경우 '/'가 포함되어 Home 렌더 => '/about'이 포함되어 About 렌더)
+
+	4. Link
+
+    > Navigation 에 import 후 사용
+
+    - 이 때 Link는 반드시 Router 안에 있어야 한다!
+
+    ```react
+    import React from "react"
+    import { Link } from "react-router-dom"
+    
+    function Navigation() {
+      return (
+      <div>
+        <Navigation />
+        <Link to="/">Home</Link>
+        <Link to="/about">About</Link>
+      </div>
+      )
+    }
+    
+    export default Navigation
+    ```
+
+    
+
+### HashRouter vs. BrowserRouter
+
+- **HashRouter**
+
+  - 백엔드가 필요없을 때 유용
+  - 페이지 경로 뒤에 `/#/식별자`를 입력하면 서버 요청 없이 식별자에 해당하는 element를 렌더
+  - 검색 엔진이 읽지 못함
+  - 정적인 페이지에 적합
+
+  => <u>Github에 올릴 개인 포트폴리오에 적합</u>
+
+- **BrowserRouter**
+
+  - 대부분의 상용 어플리케이션에 적합한 라우터
+  - 새로고침을 하면 에러가 발생 (해결을 위해선 서버에 추가적인 세팅 필요)
+  - github 배포가 복잡
+  - 동적인 페이지에 적합
+
+  => <u>일반 프로젝트 작업에 적합</u>
+
+
+
+## Router Props
+
+> https://gongbu-ing.tistory.com/45
+
+Link를 통해 라우팅을 하면 연결된 컴포넌트에 props 객체의 형태로 **match, location, history** 정보가 담김
+
+이를 이용해 라우팅 과정에서 데이터를 전달할 수 있음
+
+1. App.js에서 variable routing
+
+   ```react
+   <Route path="/movie/:id" exact={true} component={Detail}></Route>
+   ```
+
+2. Movie.js에서 Link 과정에서 전달할 state 설정
+
+   ```react
+   <Link to={{
+         pathname: `/movie/${id}`,
+         state: {
+           year,
+           title,
+           summary,
+           poster,
+           rating,
+           genres,
+         }
+       }}>
+   	<div>
+   		...
+   	</div>
+   </Link>
+   ```
+
+3. Detail.js에서 전달받은 props 사용
+
+   - history는 특정 경로로 push할 때 사용
+   - location은 전달된 state 요소를 활용할 때 사용
+
+   ```react
+   class Detail extends React.Component {
+     componentDidMount() {
+       const { location, history } = this.props
+       if (location.state === undefined) {
+         history.push("/")
+       } 
+     }
+     render() {
+       console.log(this.props) // 라우팅을 할 때 전달되는 props들
+       const { location } = this.props
+       if (location.state) {
+         return <span>{location.state.title}</span>
+       } else {
+         return null
+       }
+     }
+   }
+   ```
